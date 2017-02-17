@@ -29,7 +29,7 @@ raffle = {}
 for tweet in tweets:
 	raffle[tweet['user']['id']] = tweet['user']['screen_name']
 
-
+# get all the entries in the raffle that are also followers of DomEnterprises
 eligible = {k:v for k,v in raffle.items() if k in followers}
 
 lottery = Raffle(eligible)

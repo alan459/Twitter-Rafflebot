@@ -34,7 +34,7 @@ class Raffle:
 	def generateRaffle(self):
 
 		# delete winners from over 1 hour ago so they're eligible to win again
-		self.deleteOldEntries(1)
+		#self.deleteOldEntries(1)
 
 		# get list of tweet ids
 		userIDs = list(self.tweeters)
