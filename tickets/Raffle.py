@@ -1,11 +1,12 @@
 import random
 from models import RaffleWinner
 from datetime import datetime, timedelta
-from django.utils import timezone
 
-
+# A class to generate a winner from a dictionary of raffle participants,
+# where the dictionary is a lsit of user_id:username pairs
 class Raffle:
 
+	# takes a dictionary of userid:username pairs to choose a winner from
 	def __init__(self, users):
 		self.tweeters = users
 
