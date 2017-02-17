@@ -1,20 +1,40 @@
 import random
 from models import RaffleWinner
+from datetime import datetime, timedelta
 
-
+# A class to generate a winner from a dictionary of raffle participants,
+# where the dictionary is a lsit of user_id:username pairs
 class Raffle:
 
+	# takes a dictionary of userid:username pairs to choose a winner from
 	def __init__(self, users):
 		self.tweeters = users
 
+
+	# Return whether or not the tweet id has recently won 
 	def hasWonBefore(self, tweetID):
 		for raffleWinner in RaffleWinner.objects.all():
+			#print raffleWinner.win_date, raffleWinner.tweet_id
 			if raffleWinner.tweet_id == tweetID:
 				return True
 
 		return False
 
+
+	# delete entries older than the specified number of hours
+	def deleteOldEntries(self, numberOfHours):
+		RaffleWinner.objects.filter(win_date__lte=datetime.now()-timedelta(hours=numberOfHours)).delete()
+
+
+	# Generate a winner from the tweets that included the specified hashtag and add them to the
+	# database of winning tweets so they don't win again too quickly, this database will be used
+	# to compare new winners with tweets that already won to make sure this tweet hasn't won
+	# too recently 
+	# Return the name of the winner who tweeted the chosen tweet
 	def generateRaffle(self):
+
+		# delete winners from over 1 hour ago so they're eligible to win again
+		self.deleteOldEntries(1)
 
 		# get list of tweet ids
 		userIDs = list(self.tweeters)
